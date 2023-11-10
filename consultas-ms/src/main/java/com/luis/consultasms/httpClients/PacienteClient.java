@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "pacientes-ms", url = "localhost:8083/")
+@FeignClient(value = "pacientes-ms")
 public interface PacienteClient {
     @RequestMapping(method = RequestMethod.GET, value = "/pacientes/{id}")
     Paciente buscaPaciente (@PathVariable("id") Long id);

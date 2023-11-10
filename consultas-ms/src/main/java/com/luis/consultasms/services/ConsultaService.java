@@ -3,7 +3,7 @@ package com.luis.consultasms.services;
 import com.luis.consultasms.dtos.Cancelamento;
 import com.luis.consultasms.dtos.ConsultaDTO;
 import com.luis.consultasms.entities.Consulta;
-import com.luis.consultasms.entities.Medico;
+import com.luis.consultasms.entities.MedicoMinDTO;
 import com.luis.consultasms.httpClients.MedicoClient;
 import com.luis.consultasms.httpClients.PacienteClient;
 import com.luis.consultasms.repositories.ConsultaRepository;
@@ -68,7 +68,7 @@ public class ConsultaService {
         Consulta novaConsulta = new Consulta();
 
         if(consultaDTO.getMedicoID()==null){
-           List<Medico> medicosDisponiveis = medicoClient.buscaMedicosDisponiveis(medicosIndisponiveisIds);
+           List<MedicoMinDTO> medicosDisponiveis = medicoClient.buscaMedicosDisponiveis(medicosIndisponiveisIds);
 
             Random aleatorio = new Random();
             novaConsulta.setMedicoID((medicosDisponiveis.get(

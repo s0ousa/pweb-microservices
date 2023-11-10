@@ -4,11 +4,14 @@ import com.luis.medicosms.dtos.MedicoDTO;
 import com.luis.medicosms.dtos.MedicoMinDTO;
 import com.luis.medicosms.services.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +34,6 @@ public class MedicoController {
 
     @GetMapping
     public List<MedicoMinDTO> findAllAvaiable(@RequestBody List<Long> idsMedicosIndisponiveis){
-
         return
                 medicoService
                 .buscaMedicosDisponiveis(idsMedicosIndisponiveis)
