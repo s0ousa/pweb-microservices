@@ -1,8 +1,10 @@
 package com.luis.medicosms.controllers;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.luis.medicosms.dtos.MedicoDTO;
 import com.luis.medicosms.dtos.MedicoMinDTO;
 import com.luis.medicosms.services.MedicoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,15 +29,14 @@ public class MedicoController {
         return ResponseEntity.ok(new MedicoDTO(medicoService.buscaMedicoAtivo(id)));
     }
 
-//    @GetMapping
-//    public ResponseEntity<Page<MedicoMinDTO>>  findAll(@RequestParam Map<String, String> param, Pageable pageable) {
-//        return ResponseEntity.ok(medicoService.findAll(param, pageable));
-//    }
+    @GetMapping(value = "/")
+    public ResponseEntity<Page<MedicoMinDTO>>  findAll(@RequestParam Map<String, String> param, Pageable pageable) {
+        return ResponseEntity.ok(medicoService.findAll(param, pageable));
+    }
 
     @GetMapping
     public List<MedicoMinDTO> findAllAvaiable(@RequestBody List<Long> idsMedicosIndisponiveis){
-        return
-                medicoService
+        return medicoService
                 .buscaMedicosDisponiveis(idsMedicosIndisponiveis)
                 .stream()
                 .map(MedicoMinDTO::new)
@@ -43,7 +44,7 @@ public class MedicoController {
     }
 
     @PostMapping
-    public ResponseEntity<MedicoDTO> create(@RequestBody MedicoDTO medicoDTO) {
+    public ResponseEntity<MedicoDTO> create(@RequestBody @Valid MedicoDTO medicoDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(medicoService.create(medicoDTO));
     }
 

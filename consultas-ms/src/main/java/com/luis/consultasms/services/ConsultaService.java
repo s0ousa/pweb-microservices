@@ -68,6 +68,7 @@ public class ConsultaService {
         Consulta novaConsulta = new Consulta();
 
         if(consultaDTO.getMedicoID()==null){
+
            List<MedicoMinDTO> medicosDisponiveis = medicoClient.buscaMedicosDisponiveis(medicosIndisponiveisIds);
 
             Random aleatorio = new Random();

@@ -116,8 +116,11 @@ public class MedicoService {
     public List<Medico> buscaMedicosDisponiveis(List<Long> idsMedicosIndisponiveis) {
         Optional<List<Medico>> todosMedicos = medicoRepository.findAllByAtivo(true);
 
-        Map<Long, Medico > map = todosMedicos.get().stream()
-                .collect(Collectors.toMap(Medico::getId, Function.identity()));
+        Map<Long, Medico > map = todosMedicos
+                .get()
+                .stream()
+                .collect(Collectors
+                        .toMap(Medico::getId, Function.identity()));
 
         for(Long medicoId : idsMedicosIndisponiveis) {
             map.remove(medicoId);

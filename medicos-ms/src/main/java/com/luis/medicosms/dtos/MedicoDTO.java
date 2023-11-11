@@ -3,6 +3,8 @@ package com.luis.medicosms.dtos;
 import com.luis.medicosms.entities.Endereco;
 import com.luis.medicosms.entities.Especialidade;
 import com.luis.medicosms.entities.Medico;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +27,8 @@ public class MedicoDTO {
     private String telefone;
     @NotBlank
     private String crm;
-    @NotBlank
+    @Enumerated(EnumType.STRING)
+    @NotNull
     private Especialidade especialidade;
     @Valid
     @NotNull(message = "Endereco não pode estar em branco.")
