@@ -1,6 +1,5 @@
 package com.luis.medicosms.controllers;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.luis.medicosms.dtos.MedicoDTO;
 import com.luis.medicosms.dtos.MedicoMinDTO;
 import com.luis.medicosms.services.MedicoService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value="/medicos")
@@ -30,17 +28,22 @@ public class MedicoController {
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<Page<MedicoMinDTO>>  findAll(@RequestParam Map<String, String> param, Pageable pageable) {
-        return ResponseEntity.ok(medicoService.findAll(param, pageable));
+    public ResponseEntity<Page<MedicoMinDTO>> findAllPaginados(@RequestParam Map<String, String> param, Pageable pageable) {
+        return ResponseEntity.ok(medicoService.findAllPaginados(param, pageable));
     }
 
+//    @GetMapping
+//    public List<MedicoMinDTO> findAllAvaiable(@RequestBody List<Long> idsMedicosIndisponiveis){
+//        return medicoService
+//                .buscaMedicosDisponiveis(idsMedicosIndisponiveis)
+//                .stream()
+//                .map(MedicoMinDTO::new)
+//                .collect(Collectors.toList());
+//    }
+
     @GetMapping
-    public List<MedicoMinDTO> findAllAvaiable(@RequestBody List<Long> idsMedicosIndisponiveis){
-        return medicoService
-                .buscaMedicosDisponiveis(idsMedicosIndisponiveis)
-                .stream()
-                .map(MedicoMinDTO::new)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<MedicoMinDTO>> findAll() {
+        return ResponseEntity.ok(medicoService.findAll());
     }
 
     @PostMapping

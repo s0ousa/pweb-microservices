@@ -46,7 +46,7 @@ public class MedicoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MedicoMinDTO> findAll(Map<String, String> param, Pageable pageable) {
+    public Page<MedicoMinDTO> findAllPaginados(Map<String, String> param, Pageable pageable) {
         String page = Optional.ofNullable(param.get("page")).orElse("0");
         int pageSize = Integer.parseInt(Optional.ofNullable(param.get("size")).orElse("10"));
         String metodoOrdenacao = Optional.ofNullable(param.get("sortBy")).orElse("nome");
@@ -129,6 +129,14 @@ public class MedicoService {
         List<Medico> medicosDisponiveis = new ArrayList<Medico>(map.values());
 
         return medicosDisponiveis;
+    }
+
+    public List<MedicoMinDTO> findAll() {
+        List<Medico> result = medicoRepository.findAllByAtivo(true).get();
+        return result
+                .stream()
+                .map(MedicoMinDTO::new)
+                .collect(Collectors.toList());
     }
 }
 

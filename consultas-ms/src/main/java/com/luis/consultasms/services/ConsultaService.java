@@ -18,10 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsultaService {
@@ -68,12 +67,11 @@ public class ConsultaService {
         Consulta novaConsulta = new Consulta();
 
         if(consultaDTO.getMedicoID()==null){
-
-           List<MedicoMinDTO> medicosDisponiveis = medicoClient.buscaMedicosDisponiveis(medicosIndisponiveisIds);
+            List<MedicoMinDTO> medicosDisponiveis = medicoClient.buscaMedicosDisponiveis();
 
             Random aleatorio = new Random();
-            novaConsulta.setMedicoID((medicosDisponiveis.get(
-                    aleatorio.nextInt(0,medicosDisponiveis.size()))).getId());
+            novaConsulta.setMedicoID((medicosDisponiveis
+                    .get(aleatorio.nextInt(0,medicosDisponiveis.size()))).getId());
         } else {
             if(medicosIndisponiveisIds.contains(consultaDTO.getMedicoID())){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse médico está indisponivel");
@@ -96,6 +94,24 @@ public class ConsultaService {
         result.setAtivo(false);
 
         return new ConsultaDTO(consultaRepository.save(result));
+    }
+
+
+    public List<MedicoMinDTO> buscaMedicosDisponiveis(List<Long> idsMedicosIndisponiveis) {
+        List<MedicoMinDTO> todosMedicos = medicoClient.buscaMedicosDisponiveis();
+
+        Map<Long, MedicoMinDTO > map = todosMedicos
+                .stream()
+                .collect(Collectors
+                        .toMap(MedicoMinDTO::getId, Function.identity()));
+
+        for(Long medicoId : idsMedicosIndisponiveis) {
+            map.remove(medicoId);
+        }
+
+        List<MedicoMinDTO> medicosDisponiveis = new ArrayList<MedicoMinDTO>(map.values());
+
+        return medicosDisponiveis;
     }
 
 }
