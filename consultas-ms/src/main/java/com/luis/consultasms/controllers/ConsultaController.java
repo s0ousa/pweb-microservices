@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-
+@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin","Access-Control-Allow-Credentials"})
 @RestController
 @RequestMapping(value="/consultas")
 public class ConsultaController {
@@ -20,11 +20,13 @@ public class ConsultaController {
     @Autowired
     private ConsultaService consultaService;
 
+    @CrossOrigin
     @GetMapping(value = "/{id}")
     public ResponseEntity<ConsultaDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(consultaService.searchById(id));
     }
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<Page<ConsultaDTO>> findAll(@RequestParam Map<String, String> param, Pageable pageable) {
         return ResponseEntity.ok(consultaService.findAll(param, pageable));

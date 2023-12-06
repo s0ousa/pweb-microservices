@@ -4,6 +4,7 @@ import com.luis.pacientesms.dtos.PacienteDTO;
 import com.luis.pacientesms.dtos.PacienteMinDTO;
 import com.luis.pacientesms.services.PacienteService;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.GET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin","Access-Control-Allow-Credentials"})
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
@@ -20,14 +22,17 @@ public class PacienteController {
     @Autowired
     private PacienteService pacienteService;
 
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<PacienteDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(pacienteService.searchById(id));
     }
+
     @GetMapping
     public ResponseEntity<Page<PacienteMinDTO>>  findAll(@RequestParam Map<String, String> param, Pageable pageable) {
         return ResponseEntity.ok(pacienteService.findAll(param, pageable));
     }
+
 
     @PostMapping
     public ResponseEntity<PacienteDTO> create(@Valid @RequestBody PacienteDTO pacienteDTO) {

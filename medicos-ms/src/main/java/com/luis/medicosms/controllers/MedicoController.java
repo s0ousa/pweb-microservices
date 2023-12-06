@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin","Access-Control-Allow-Credentials"})
 @RestController
 @RequestMapping(value="/medicos")
 public class MedicoController {
@@ -25,6 +26,12 @@ public class MedicoController {
     public ResponseEntity<MedicoDTO> findById(@PathVariable Long id) {
 //      return ResponseEntity.ok(medicoService.searchById(id));
         return ResponseEntity.ok(new MedicoDTO(medicoService.buscaMedicoAtivo(id)));
+    }
+
+    @GetMapping(value = "todos/{id}")
+    public ResponseEntity<MedicoDTO> findByIdTodos(@PathVariable Long id) {
+        return ResponseEntity.ok(medicoService.searchById(id));
+//     return ResponseEntity.ok(new MedicoDTO(medicoService.buscaMedicoAtivo(id)));
     }
 
     @GetMapping(value = "/")
@@ -41,6 +48,7 @@ public class MedicoController {
 //                .collect(Collectors.toList());
 //    }
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<MedicoMinDTO>> findAll() {
         return ResponseEntity.ok(medicoService.findAll());
